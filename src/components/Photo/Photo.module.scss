@@ -1,0 +1,23 @@
+.photo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+    }
+
+    &__media {
+        flex: 0 1 48%;
+    }
+
+    &__textbox {
+        flex: 0 1 48%;
+        padding: 0 20px;
+            h1 {
+                @media (max-width: 1024px) {
+                    text-align: center;
+                }
+            }
+    }
+}
