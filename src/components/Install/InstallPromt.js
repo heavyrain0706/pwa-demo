@@ -11,7 +11,7 @@ const InstallPrompt = () => {
 
     window.addEventListener('beforeinstallprompt', beforeInstallPromptHandler);
 
-    const timer = setTimeout(() => {
+    const handleFirstUserAction = () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
@@ -23,11 +23,17 @@ const InstallPrompt = () => {
           setDeferredPrompt(null);
         });
       }
-    }, 10000);
+      window.removeEventListener('touchstart', handleFirstUserAction);
+      window.removeEventListener('click', handleFirstUserAction);
+    };
+
+    window.addEventListener('touchstart', handleFirstUserAction);
+    window.addEventListener('click', handleFirstUserAction);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', beforeInstallPromptHandler);
-      clearTimeout(timer);
+      window.removeEventListener('touchstart', handleFirstUserAction);
+      window.removeEventListener('click', handleFirstUserAction);
     };
   }, [deferredPrompt]);
 
