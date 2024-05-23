@@ -10,6 +10,18 @@ const InstallPrompt = () => {
       e.preventDefault();
       if (!installPromptDismissed) {
         setDeferredPrompt(e);
+        setTimeout(() => {
+          e.prompt();
+          e.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the install prompt');
+            } else {
+              console.log('User dismissed the install prompt');
+              localStorage.setItem('installPromptDismissed', 'true');
+            }
+            setDeferredPrompt(null);
+          });
+        }, 5000); 
       }
     };
 
@@ -20,30 +32,7 @@ const InstallPrompt = () => {
     };
   }, []);
 
-  const handleInstallTouch = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-          localStorage.setItem('installPromptDismissed', 'true');
-        }
-        setDeferredPrompt(null);
-      });
-    }
-  };
-
-  return (
-    <div>
-      {deferredPrompt && (
-        <button onTouchEnd={handleInstallTouch}>
-          Установить приложение
-        </button>
-      )}
-    </div>
-  );
+  return null;
 };
 
 export default InstallPrompt;
